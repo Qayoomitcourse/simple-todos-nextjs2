@@ -1,17 +1,25 @@
 "use client"
 import { useState } from "react"
 
+interface Todo {
+  itemName: string;
+  id: number;
+}
+
 export default function Todos() {
   // define state
-  const [todos, settodos] = useState([{ itemName: "Typescript Learning", id: 1 }, { itemName: "Next.Js Learning,", id: 2 }])
-  const [inputval, setinput] = useState("")
-  const [id, setid] = useState(0)
+  const [todos, settodos] = useState<Todo[]>([
+    { itemName: "Typescript Learning", id: 1 },
+    { itemName: "Next.Js Learning,", id: 2 },
+  ])
+  const [inputval, setinput] = useState<string>("")
+  const [id, setid] = useState<number>(0)
 
-  //functions 
+  // functions 
   const addItem = () => {
-    const obj: any = todos.find(item => item.id === id)  
+    const obj = todos.find(item => item.id === id)  
     if (obj) {
-      let newArray = todos.filter(item => item.id !== obj.id)  
+      const newArray = todos.filter(item => item.id !== obj.id)  
       settodos([...newArray, { itemName: inputval, id: id }])
       setinput("")
       setid(0)
@@ -23,16 +31,16 @@ export default function Todos() {
     setid(0)
   }
 
-  const editItem = (id: any) => {
-    const obj: any = todos.find(item => item.id === id)  
+  const editItem = (id: number) => {
+    const obj = todos.find(item => item.id === id)  
     if (obj) {  // Added a check to ensure object exists
       setinput(obj.itemName)
       setid(obj.id)
     }
   }
 
-  const deleteItem = (id:any) => {
-    let newArray = todos.filter(item => item.id !== id)  
+  const deleteItem = (id: number) => {
+    const newArray = todos.filter(item => item.id !== id)  
     settodos([...newArray])
   }
 
@@ -52,7 +60,7 @@ export default function Todos() {
         <input 
           type="number" 
           value={id} 
-          onChange={(e: any) => setid(e.target.value)} 
+          onChange={(e) => setid(Number(e.target.value))} 
           placeholder="ID"
           className="shadow-lg rounded-xl text-center w-[20%] py-3 text-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
         
@@ -68,9 +76,9 @@ export default function Todos() {
       <h1 className="mt-8 text-3xl font-semibold text-blue-700 text-center">TODOS ITEM LIST</h1>
 
       {/* Todo List Items */}
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-8 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
         {
-          todos.map((item: any, i: number) => {
+          todos.map((item, i) => {
             return (
               <div className="shadow-xl p-6 bg-white rounded-2xl hover:shadow-2xl transition duration-300 ease-in-out transform hover:scale-105" key={i}>
                 <div className="flex justify-between text-xl">
